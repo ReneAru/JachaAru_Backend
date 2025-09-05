@@ -820,7 +820,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"filtroId\": 1\n}"
+                  "raw": "{\n  \"usuarioId\": {{user_id}},\n  \"filtroId\": 1,\n  \"startDate\": \"2024-01-15\",\n  \"endDate\": \"2024-12-31\"\n}"
                 },
                 "url": {
                   "raw": "{{baseUrl}}/consultations/rapidas",
@@ -868,7 +868,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"filtroId\": 1,\n  \"investigadorId\": 1\n}"
+                  "raw": "{\n  \"usuarioId\": {{user_id}},\n  \"filtroId\": 1,\n  \"investigadorId\": 1,\n  \"startDate\": \"2024-01-15\",\n  \"endDate\": \"2024-12-31\"\n}"
                 },
                 "url": {
                   "raw": "{{baseUrl}}/consultations/filtros",
@@ -916,7 +916,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"consulta\": \"Necesito análisis detallado de tendencias educativas en áreas rurales\",\n  \"investigadorId\": 1\n}"
+                  "raw": "{\n  \"consulta\": \"Necesito análisis detallado de tendencias educativas en áreas rurales\",\n  \"usuarioId\": {{user_id}},\n  \"investigadorId\": 1,\n  \"startDate\": \"2024-01-15\",\n  \"endDate\": \"2024-12-31\"\n}"
                 },
                 "url": {
                   "raw": "{{baseUrl}}/consultations/complejas",

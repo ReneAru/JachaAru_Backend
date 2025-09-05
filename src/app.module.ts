@@ -8,6 +8,7 @@ import { UsuariosModule } from './modules/usuarios/usuarios.module';
 import { CategoriasModule } from './modules/categorias/categorias.module';
 import { TemasModule } from './modules/temas/temas.module';
 import { IndicadoresModule } from './modules/indicadores/indicadores.module';
+import { ConsultationsModule } from './modules/consultations/consultations.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { IndicadoresModule } from './modules/indicadores/indicadores.module';
     CategoriasModule,
     TemasModule,
     IndicadoresModule,
+    ConsultationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

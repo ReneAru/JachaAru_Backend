@@ -581,6 +581,72 @@
               ]
             }
           }
+        },
+        {
+          "name": "Update Tema",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tema\": \"Acceso equitativo a la educación\",\n  \"categoriaId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/temas/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "temas",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Tema",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test for successful deletion",
+                  "if (pm.response.code === 200) {",
+                  "    console.log('Tema deleted successfully');",
+                  "}",
+                  "",
+                  "// Test for foreign key constraint errors",
+                  "if (pm.response.code === 400) {",
+                  "    const response = pm.response.json();",
+                  "    console.log('Deletion prevented:', response.message);",
+                  "    pm.test('Contains helpful error message', function () {",
+                  "        pm.expect(response.message).to.include('Cannot delete theme');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/temas/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "temas",
+                "1"
+              ]
+            }
+          }
         }
       ]
     },
@@ -647,6 +713,72 @@
               ],
               "path": [
                 "indicadores"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Indicador",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"indicador\": \"Tasa neta de matrícula escolar\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/indicadores/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "indicadores",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Indicador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test for successful deletion",
+                  "if (pm.response.code === 200) {",
+                  "    console.log('Indicador deleted successfully');",
+                  "}",
+                  "",
+                  "// Test for foreign key constraint errors",
+                  "if (pm.response.code === 400) {",
+                  "    const response = pm.response.json();",
+                  "    console.log('Deletion prevented:', response.message);",
+                  "    pm.test('Contains helpful error message', function () {",
+                  "        pm.expect(response.message).to.include('Cannot delete indicator');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/indicadores/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "indicadores",
+                "1"
               ]
             }
           }

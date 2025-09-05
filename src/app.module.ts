@@ -5,6 +5,9 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsuariosModule } from './modules/usuarios/usuarios.module';
+import { CategoriasModule } from './modules/categorias/categorias.module';
+import { TemasModule } from './modules/temas/temas.module';
+import { IndicadoresModule } from './modules/indicadores/indicadores.module';
 
 @Module({
   imports: [
@@ -14,6 +17,9 @@ import { UsuariosModule } from './modules/usuarios/usuarios.module';
     DatabaseModule,
     AuthModule,
     UsuariosModule,
+    CategoriasModule,
+    TemasModule,
+    IndicadoresModule,
   ],
   controllers: [AppController],
   providers: [AppService],

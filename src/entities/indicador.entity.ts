@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { IndicadorTema } from './indicador-tema.entity';
 import { TipoDesegregacionIndicador } from './tipo-desegregacion-indicador.entity';
+import { Filtro } from './filtro.entity';
 
 @Entity('indicador')
 export class Indicador extends BaseEntity {
@@ -16,4 +17,7 @@ export class Indicador extends BaseEntity {
     (tipoDesIndicador) => tipoDesIndicador.indicador,
   )
   tipoDesegregacionIndicadores: TipoDesegregacionIndicador[];
+
+  @OneToMany(() => Filtro, (filtro) => filtro.indicador)
+  filtros: Filtro[];
 }

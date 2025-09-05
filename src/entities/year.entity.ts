@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { FuenteYear } from './fuente-year.entity';
 import { YearDesegregacion } from './year-desegregacion.entity';
+import { Filtro } from './filtro.entity';
 
 @Entity('year')
 export class Year extends BaseEntity {
@@ -16,4 +17,7 @@ export class Year extends BaseEntity {
     (yearDesegregacion) => yearDesegregacion.year,
   )
   yearDesegregaciones: YearDesegregacion[];
+
+  @OneToMany(() => Filtro, (filtro) => filtro.year)
+  filtros: Filtro[];
 }

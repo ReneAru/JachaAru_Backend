@@ -1,9 +1,10 @@
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Tema } from './tema.entity';
 import { Indicador } from './indicador.entity';
 
 @Entity('indicador_tema')
+@Index(['temaId', 'indicadorId'])
 export class IndicadorTema extends BaseEntity {
   @Column({ name: 'tema_id' })
   temaId: number;

@@ -18,11 +18,11 @@ export class Usuario extends BaseEntity {
   @Column({ type: 'varchar', length: 500 })
   pass: string;
 
-  @Column({ name: 'google_id', type: 'int', nullable: true })
-  googleId: number;
+  @Column({ name: 'google_id', type: 'varchar', length: 100, nullable: true })
+  googleId: string;
 
-  @Column({ name: 'telegram_id', type: 'int', nullable: true })
-  telegramId: number;
+  @Column({ name: 'telegram_id', type: 'varchar', length: 100, nullable: true })
+  telegramId: string;
 
   @OneToMany(
     () => ConsultaCompleja,

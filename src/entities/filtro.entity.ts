@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany, Index } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Categoria } from './categoria.entity';
 import { Tema } from './tema.entity';
@@ -11,6 +11,13 @@ import { ConsultaFiltro } from './consulta-filtro.entity';
 import { ConsultaRapida } from './consulta-rapida.entity';
 
 @Entity('filtro')
+@Index(['categoriaId'])
+@Index(['temaId'])
+@Index(['indicadorId'])
+@Index(['desegregacionId'])
+@Index(['yearId'])
+@Index(['fuenteId'])
+@Index(['fichaMetodologicaId'])
 export class Filtro extends BaseEntity {
   @Column({ name: 'categoria_id' })
   categoriaId: number;

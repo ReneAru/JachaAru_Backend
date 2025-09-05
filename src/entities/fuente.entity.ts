@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { FuenteYear } from './fuente-year.entity';
 import { FichaFuente } from './ficha-fuente.entity';
+import { Filtro } from './filtro.entity';
 
 @Entity('fuente')
 export class Fuente extends BaseEntity {
@@ -13,4 +14,7 @@ export class Fuente extends BaseEntity {
 
   @OneToMany(() => FichaFuente, (fichaFuente) => fichaFuente.fuente)
   fichaFuentes: FichaFuente[];
+
+  @OneToMany(() => Filtro, (filtro) => filtro.fuente)
+  filtros: Filtro[];
 }

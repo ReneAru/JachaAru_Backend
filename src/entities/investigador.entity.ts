@@ -15,8 +15,8 @@ export class Investigador extends BaseEntity {
   @Column({ type: 'varchar', length: 50, unique: true })
   correo: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  telegramid: string;
+  @Column({ name: 'telegram_id', type: 'varchar', length: 50, nullable: true })
+  telegramId: string;
 
   @OneToMany(
     () => InvestigadorArea,

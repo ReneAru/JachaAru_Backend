@@ -1,0 +1,832 @@
+{
+  "info": {
+    "name": "Jacha Aru API",
+    "description": "API collection for Jacha Aru consultation management system - Fundación Aru",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "jacha-aru-api-v1"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', response.access_token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Juan Carlos\",\n  \"apellidos\": \"Pérez López\",\n  \"mail\": \"juan.perez@example.com\",\n  \"pass\": \"password123\",\n  \"googleId\": null,\n  \"telegramId\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', response.access_token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mail\": \"juan.perez@example.com\",\n  \"pass\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categorias",
+      "item": [
+        {
+          "name": "Get All Categorias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categorias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Categoria by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categorias/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Temas by Categoria",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categorias/1/temas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "1",
+                "temas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Categoria",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"Educación\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Categoria",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"Educación Superior\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Categoria",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categorias/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Temas",
+      "item": [
+        {
+          "name": "Get All Temas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/temas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "temas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Tema by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/temas/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "temas",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Tema",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tema\": \"Acceso a la educación\",\n  \"categoriaId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/temas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "temas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Indicadores",
+      "item": [
+        {
+          "name": "Get All Indicadores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/indicadores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "indicadores"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Indicador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"indicador\": \"Tasa de matrícula escolar\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/indicadores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "indicadores"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Consultations",
+      "item": [
+        {
+          "name": "Consulta Rapida",
+          "item": [
+            {
+              "name": "Get My Quick Consultations",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/consultations/rapidas",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "consultations",
+                    "rapidas"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Quick Consultation",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filtroId\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/consultations/rapidas",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "consultations",
+                    "rapidas"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consulta Filtro",
+          "item": [
+            {
+              "name": "Get My Filter Consultations",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/consultations/filtros",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "consultations",
+                    "filtros"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Filter Consultation",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filtroId\": 1,\n  \"investigadorId\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/consultations/filtros",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "consultations",
+                    "filtros"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consulta Compleja",
+          "item": [
+            {
+              "name": "Get My Complex Consultations",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/consultations/complejas",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "consultations",
+                    "complejas"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Complex Consultation",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"consulta\": \"Necesito análisis detallado de tendencias educativas en áreas rurales\",\n  \"investigadorId\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/consultations/complejas",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "consultations",
+                    "complejas"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Investigadores",
+      "item": [
+        {
+          "name": "Get All Investigadores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/investigadores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "investigadores"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Investigador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"María\",\n  \"apellido\": \"Rodriguez\",\n  \"correo\": \"maria.rodriguez@fundacionaru.org\",\n  \"telegramId\": \"@maria_researcher\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/investigadores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "investigadores"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Filtros",
+      "item": [
+        {
+          "name": "Get All Filtros",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/filtros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filtros"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Filtro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoriaId\": 1,\n  \"temaId\": 1,\n  \"indicadorId\": 1,\n  \"desegregacionId\": 1,\n  \"yearId\": 1,\n  \"fuenteId\": 1,\n  \"fichaMetodologicaId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/filtros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filtros"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Filtro by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/filtros/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filtros",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Data Management",
+      "item": [
+        {
+          "name": "Years",
+          "item": [
+            {
+              "name": "Get All Years",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/years",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "years"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Year",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"year\": 2024\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/years",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "years"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Fuentes",
+          "item": [
+            {
+              "name": "Get All Fuentes",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/fuentes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "fuentes"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Fuente",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fuente\": \"INE Bolivia\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/fuentes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "fuentes"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Desegregacion",
+          "item": [
+            {
+              "name": "Get All Desegregaciones",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/desegregaciones",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "desegregaciones"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get All Tipos Desegregacion",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/tipos-desegregacion",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tipos-desegregacion"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Responses",
+      "item": [
+        {
+          "name": "Get Responses for Complex Consultation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/responses/complex/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "responses",
+                "complex",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Response for Complex Consultation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"consultaComplejaId\": 1,\n  \"costo\": 150.00,\n  \"documento\": \"respuesta_analisis_educacion_rural.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/responses/complex",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "responses",
+                "complex"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Get API Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

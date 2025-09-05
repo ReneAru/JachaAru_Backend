@@ -17,9 +17,15 @@ export class Tema extends BaseEntity {
   @JoinColumn({ name: 'categoria_id' })
   categoria: Categoria;
 
-  @OneToMany(() => IndicadorTema, (indicadorTema) => indicadorTema.tema)
+  @OneToMany(() => IndicadorTema, (indicadorTema) => indicadorTema.tema, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   indicadorTemas: IndicadorTema[];
 
-  @OneToMany(() => Filtro, (filtro) => filtro.tema)
+  @OneToMany(() => Filtro, (filtro) => filtro.tema, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   filtros: Filtro[];
 }

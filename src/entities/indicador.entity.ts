@@ -9,15 +9,25 @@ export class Indicador extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   indicador: string;
 
-  @OneToMany(() => IndicadorTema, (indicadorTema) => indicadorTema.indicador)
+  @OneToMany(() => IndicadorTema, (indicadorTema) => indicadorTema.indicador, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   indicadorTemas: IndicadorTema[];
 
   @OneToMany(
     () => TipoDesegregacionIndicador,
     (tipoDesIndicador) => tipoDesIndicador.indicador,
+    {
+      cascade: true,
+      onDelete: 'CASCADE',
+    }
   )
   tipoDesegregacionIndicadores: TipoDesegregacionIndicador[];
 
-  @OneToMany(() => Filtro, (filtro) => filtro.indicador)
+  @OneToMany(() => Filtro, (filtro) => filtro.indicador, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   filtros: Filtro[];
 }

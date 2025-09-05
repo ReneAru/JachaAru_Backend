@@ -1,6 +1,6 @@
 # Jacha Aru API - Postman Collection
 
-This directory contains Postman collection and environment files for testing the Jacha Aru API.
+This directory contains Postman collection and environment files for testing the Jacha Aru API with comprehensive error handling and testing scenarios.
 
 ## Files
 
@@ -24,16 +24,26 @@ This directory contains Postman collection and environment files for testing the
 
 ## API Structure
 
-### Authentication
-- `POST /auth/register` - Register new user
-- `POST /auth/login` - Login user
+### Authentication (Enhanced with Error Testing)
+- `POST /auth/register` - Register new user (with duplicate email handling)
+- `POST /auth/login` - Login user (with invalid credential testing)
+- `POST /auth/register` - Test duplicate registration (soft-delete restoration)
+- Tests for invalid login credentials and meaningful error messages
 
-### Categories & Hierarchy  
-- `GET /categorias` - Get all categories
+### User Management
+- `GET /usuarios/me` - Get my profile
+- `PUT /usuarios/me` - Update my profile
+- `GET /usuarios` - Get all users (admin)
+- `GET/PUT/DELETE /usuarios/:id` - Manage specific users
+
+### Categories & Hierarchy (Enhanced with Filtering)
+- `GET /categorias` - Get all categories with themes
 - `GET /categorias/:id/temas` - Get themes by category
-- `POST /categorias` - Create category
-- `GET /temas` - Get all themes
+- `GET /temas` - Get all themes  
+- `GET /temas?categoriaId=X` - **Filter themes by category**
 - `GET /indicadores` - Get all indicators
+- `GET /indicadores?temaId=X` - **Filter indicators by theme**
+- Full CRUD operations with foreign key constraint handling
 
 ### Consultations
 - `GET/POST /consultations/rapidas` - Quick consultations
@@ -55,25 +65,83 @@ This directory contains Postman collection and environment files for testing the
 ### Responses
 - `GET/POST /responses/*` - Consultation responses
 
+## Key Features Added
+
+### 🛡️ Enhanced Error Handling
+- **Foreign Key Constraint Testing**: Deletion tests show meaningful error messages
+- **Authentication Error Testing**: Invalid credentials, duplicate emails, etc.
+- **Comprehensive Logging**: All requests include test scripts for debugging
+
+### 🔍 Advanced Filtering
+- **Hierarchical Filtering**: Filter themes by category, indicators by theme
+- **Query Parameter Support**: Use `?categoriaId=X` and `?temaId=X` parameters
+- **Relational Data Loading**: Responses include related entity information
+
+### 🧪 Automated Testing
+- **Test Scripts**: Built-in test scripts verify response status and content
+- **Error Message Validation**: Tests ensure error messages are helpful
+- **Variable Extraction**: Automatically saves IDs and tokens for subsequent requests
+
 ## Environment Variables
 
 The environment includes these variables:
 - `baseUrl` - API base URL (default: http://localhost:3000)
 - `access_token` - JWT token (auto-populated after login)
-- `user_id` - Current user ID
+- `user_id` - Current user ID (auto-populated after login)
 - `investigador_id` - Current researcher ID
 
-## Testing Flow
+## Testing Scenarios
 
-1. **Setup**: Register/Login to get authentication token
-2. **Create Data**: Create categories, themes, indicators, sources, years
-3. **Create Filters**: Combine data elements into filters  
-4. **Create Consultations**: Submit consultation requests
-5. **Manage Responses**: Handle consultation responses
+### 🔐 Authentication Flow
+1. **Register New User** → Success with token
+2. **Login Existing User** → Success with token  
+3. **Test Invalid Login** → 401 with meaningful error
+4. **Test Duplicate Registration** → 401 or restoration of soft-deleted user
 
-## Notes
+### 🏗️ Hierarchy Management
+1. **Create Category** → Returns category with ID
+2. **Create Theme** → Link to category
+3. **Create Indicator** → Link to theme via junction table
+4. **Filter Data** → Use query parameters to filter by relationships
 
-- All endpoints except authentication require Bearer token
-- The collection automatically handles token management
-- Response data can be used in subsequent requests via variables
-- Test scripts automatically extract important IDs from responses
+### 🗑️ Deletion Testing
+1. **Try Delete Category with Themes** → 400 error with helpful message
+2. **Try Delete Theme with Filters** → 400 error explaining dependency
+3. **Delete in Correct Order** → Success (filters → indicators → themes → categories)
+
+### 📊 Advanced Features
+- **Soft Delete Restoration**: Re-registering deleted users restores them
+- **Comprehensive Logging**: Server logs show detailed authentication flow
+- **Cascade Operations**: Related data is handled properly during updates/deletes
+
+## Usage Tips
+
+1. **Start with Authentication**: Always login first to set up tokens
+2. **Check Console Logs**: Test scripts log useful debugging information
+3. **Follow Hierarchy**: Create categories before themes, themes before indicators
+4. **Test Error Cases**: Use the error testing endpoints to understand system behavior
+5. **Use Filters**: Take advantage of query parameters for hierarchical filtering
+
+## Error Messages You'll See
+
+```json
+// Foreign key constraint violation
+{
+  "statusCode": 400,
+  "message": "Cannot delete category: it has 3 related themes. Delete themes first."
+}
+
+// Authentication errors
+{
+  "statusCode": 401,
+  "message": "Invalid credentials"
+}
+
+// Duplicate registration
+{
+  "statusCode": 401,
+  "message": "User with this email already exists"
+}
+```
+
+The collection is designed to handle real-world scenarios with proper error handling and user guidance!

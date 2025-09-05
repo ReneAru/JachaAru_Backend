@@ -101,6 +101,10 @@
                   "if (pm.response.code === 200) {",
                   "    const response = pm.response.json();",
                   "    pm.collectionVariables.set('access_token', response.access_token);",
+                  "    pm.collectionVariables.set('user_id', response.user.id);",
+                  "    console.log('Login successful for user:', response.user.mail);",
+                  "} else {",
+                  "    console.log('Login failed:', pm.response.json().message);",
                   "}"
                 ],
                 "type": "text/javascript"
@@ -127,6 +131,96 @@
               "path": [
                 "auth",
                 "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Test Invalid Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns 401 for invalid credentials', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test('Contains error message', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.message).to.include('Invalid credentials');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mail\": \"nonexistent@example.com\",\n  \"pass\": \"wrongpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Test Duplicate Registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Should either succeed (new user) or fail with 401 (existing user)",
+                  "if (pm.response.code === 201) {",
+                  "    console.log('New user registered successfully');",
+                  "} else if (pm.response.code === 401) {",
+                  "    const response = pm.response.json();",
+                  "    console.log('Registration blocked:', response.message);",
+                  "    pm.test('Contains meaningful error message', function () {",
+                  "        pm.expect(response.message).to.include('already exists');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Juan Carlos\",\n  \"apellidos\": \"Pérez López\",\n  \"mail\": \"juan.perez@example.com\",\n  \"pass\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
               ]
             }
           }
@@ -364,6 +458,29 @@
         },
         {
           "name": "Delete Categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test for successful deletion",
+                  "if (pm.response.code === 200) {",
+                  "    console.log('Category deleted successfully');",
+                  "}",
+                  "",
+                  "// Test for foreign key constraint errors",
+                  "if (pm.response.code === 400) {",
+                  "    const response = pm.response.json();",
+                  "    console.log('Deletion prevented:', response.message);",
+                  "    pm.test('Contains helpful error message', function () {",
+                  "        pm.expect(response.message).to.include('Cannot delete category');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "method": "DELETE",
             "header": [],
@@ -396,6 +513,29 @@
               ],
               "path": [
                 "temas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Temas by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/temas?categoriaId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "temas"
+              ],
+              "query": [
+                {
+                  "key": "categoriaId",
+                  "value": "1",
+                  "description": "Filter themes by category ID"
+                }
               ]
             }
           }
@@ -459,6 +599,29 @@
               ],
               "path": [
                 "indicadores"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Indicadores by Theme",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/indicadores?temaId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "indicadores"
+              ],
+              "query": [
+                {
+                  "key": "temaId",
+                  "value": "1",
+                  "description": "Filter indicators by theme ID"
+                }
               ]
             }
           }

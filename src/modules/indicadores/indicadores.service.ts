@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Logger } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Indicador } from '../../entities/indicador.entity';
@@ -71,13 +71,39 @@ export class IndicadoresService {
   async remove(id: number): Promise<void> {
     this.logger.debug(`Soft deleting indicator ID: ${id}`);
     
-    const result = await this.indicadorRepository.softDelete(id);
+    // First check if indicator exists and get related data
+    const indicador = await this.indicadorRepository.findOne({
+      where: { id },
+      relations: ['indicadorTemas', 'filtros', 'tipoDesegregacionIndicadores'],
+    });
     
-    if (result.affected === 0) {
+    if (!indicador) {
       this.logger.warn(`Indicator not found for deletion with ID: ${id}`);
       throw new NotFoundException(`Indicator with ID ${id} not found`);
     }
     
-    this.logger.log(`Indicator soft deleted successfully with ID: ${id}`);
+    // Check if indicator has related data that would prevent deletion
+    if (indicador.filtros && indicador.filtros.length > 0) {
+      this.logger.warn(`Cannot delete indicator ID ${id}: has ${indicador.filtros.length} related filters`);
+      throw new BadRequestException(`Cannot delete indicator: it has ${indicador.filtros.length} related filters. Delete filters first.`);
+    }
+    
+    try {
+      const result = await this.indicadorRepository.softDelete(id);
+      
+      if (result.affected === 0) {
+        throw new NotFoundException(`Indicator with ID ${id} not found`);
+      }
+      
+      this.logger.log(`Indicator soft deleted successfully with ID: ${id}`);
+    } catch (error) {
+      this.logger.error(`Error deleting indicator ID ${id}: ${error.message}`);
+      
+      if (error.code === '23503') { // Foreign key violation
+        throw new BadRequestException(`Cannot delete indicator: it has related data. Please remove related items first.`);
+      }
+      
+      throw error;
+    }
   }
 }

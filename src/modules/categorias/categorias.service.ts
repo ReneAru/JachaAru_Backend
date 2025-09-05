@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Logger } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Categoria } from '../../entities/categoria.entity';
@@ -76,13 +76,44 @@ export class CategoriasService {
   async remove(id: number): Promise<void> {
     this.logger.debug(`Soft deleting category ID: ${id}`);
     
-    const result = await this.categoriaRepository.softDelete(id);
+    // First check if category exists and get related data
+    const categoria = await this.categoriaRepository.findOne({
+      where: { id },
+      relations: ['temas', 'filtros', 'investigadorAreas'],
+    });
     
-    if (result.affected === 0) {
+    if (!categoria) {
       this.logger.warn(`Category not found for deletion with ID: ${id}`);
       throw new NotFoundException(`Category with ID ${id} not found`);
     }
     
-    this.logger.log(`Category soft deleted successfully with ID: ${id}`);
+    // Check if category has related data that would prevent deletion
+    if (categoria.temas && categoria.temas.length > 0) {
+      this.logger.warn(`Cannot delete category ID ${id}: has ${categoria.temas.length} related themes`);
+      throw new BadRequestException(`Cannot delete category: it has ${categoria.temas.length} related themes. Delete themes first.`);
+    }
+    
+    if (categoria.filtros && categoria.filtros.length > 0) {
+      this.logger.warn(`Cannot delete category ID ${id}: has ${categoria.filtros.length} related filters`);
+      throw new BadRequestException(`Cannot delete category: it has ${categoria.filtros.length} related filters. Delete filters first.`);
+    }
+    
+    try {
+      const result = await this.categoriaRepository.softDelete(id);
+      
+      if (result.affected === 0) {
+        throw new NotFoundException(`Category with ID ${id} not found`);
+      }
+      
+      this.logger.log(`Category soft deleted successfully with ID: ${id}`);
+    } catch (error) {
+      this.logger.error(`Error deleting category ID ${id}: ${error.message}`);
+      
+      if (error.code === '23503') { // Foreign key violation
+        throw new BadRequestException(`Cannot delete category: it has related data. Please remove related items first.`);
+      }
+      
+      throw error;
+    }
   }
 }

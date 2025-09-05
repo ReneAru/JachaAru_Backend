@@ -9,15 +9,25 @@ export class Categoria extends BaseEntity {
   @Column({ type: 'varchar', length: 100 })
   categoria: string;
 
-  @OneToMany(() => Tema, (tema) => tema.categoria)
+  @OneToMany(() => Tema, (tema) => tema.categoria, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   temas: Tema[];
 
   @OneToMany(
     () => InvestigadorArea,
     (investigadorArea) => investigadorArea.categoria,
+    {
+      cascade: true,
+      onDelete: 'CASCADE',
+    }
   )
   investigadorAreas: InvestigadorArea[];
 
-  @OneToMany(() => Filtro, (filtro) => filtro.categoria)
+  @OneToMany(() => Filtro, (filtro) => filtro.categoria, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   filtros: Filtro[];
 }

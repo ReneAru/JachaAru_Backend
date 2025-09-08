@@ -9,6 +9,7 @@ import { CategoriasModule } from './modules/categorias/categorias.module';
 import { TemasModule } from './modules/temas/temas.module';
 import { IndicadoresModule } from './modules/indicadores/indicadores.module';
 import { ConsultationsModule } from './modules/consultations/consultations.module';
+import { DataModule } from './modules/data/data.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ConsultationsModule } from './modules/consultations/consultations.modul
     TemasModule,
     IndicadoresModule,
     ConsultationsModule,
+    DataModule,
   ],
   controllers: [AppController],
   providers: [AppService],

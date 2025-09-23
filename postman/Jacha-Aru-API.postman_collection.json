@@ -954,6 +954,41 @@
           }
         },
         {
+          "name": "Get Investigador by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/investigadores/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "investigadores",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Consultas by Investigador",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/investigadores/1/consultas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "investigadores",
+                "1",
+                "consultas"
+              ]
+            }
+          }
+        },
+        {
           "name": "Create Investigador",
           "request": {
             "method": "POST",
@@ -965,7 +1000,117 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"María\",\n  \"apellido\": \"Rodriguez\",\n  \"correo\": \"maria.rodriguez@fundacionaru.org\",\n  \"telegramId\": \"@maria_researcher\"\n}"
+              "raw": "{\n  \"nombre\": \"María\",\n  \"apellido\": \"Rodriguez\",\n  \"correo\": \"maria.rodriguez@fundacionaru.org\",\n  \"telegramId\": \"@maria_researcher\",\n  \"categoriaIds\": [1, 2]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/investigadores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "investigadores"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Investigador",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"María Elena\",\n  \"apellido\": \"Rodriguez Fernandez\",\n  \"telegramId\": \"@maria_researcher_updated\",\n  \"categoriaIds\": [1, 3]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/investigadores/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "investigadores",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Investigador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test for successful deletion",
+                  "if (pm.response.code === 200) {",
+                  "    console.log('Investigador deleted successfully');",
+                  "}",
+                  "",
+                  "// Test for foreign key constraint errors",
+                  "if (pm.response.code === 400) {",
+                  "    const response = pm.response.json();",
+                  "    console.log('Deletion prevented:', response.message);",
+                  "    pm.test('Contains helpful error message', function () {",
+                  "        pm.expect(response.message).to.include('Cannot delete researcher');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/investigadores/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "investigadores",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Test Duplicate Email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test for duplicate email error",
+                  "if (pm.response.code === 400) {",
+                  "    const response = pm.response.json();",
+                  "    console.log('Email conflict detected:', response.message);",
+                  "    pm.test('Contains helpful error message', function () {",
+                  "        pm.expect(response.message).to.include('email');",
+                  "        pm.expect(response.message).to.include('already exists');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"correo\": \"maria.rodriguez@fundacionaru.org\",\n  \"telegramId\": \"@juan_perez\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/investigadores",
@@ -1000,6 +1145,69 @@
           }
         },
         {
+          "name": "Get Filtros by Categoria",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/filtros?categoriaId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filtros"
+              ],
+              "query": [
+                {
+                  "key": "categoriaId",
+                  "value": "1",
+                  "description": "Filter filters by category ID"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Filtros by Tema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/filtros?temaId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filtros"
+              ],
+              "query": [
+                {
+                  "key": "temaId",
+                  "value": "1",
+                  "description": "Filter filters by theme ID"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Filtro by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/filtros/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filtros",
+                "1"
+              ]
+            }
+          }
+        },
+        {
           "name": "Create Filtro",
           "request": {
             "method": "POST",
@@ -1025,9 +1233,58 @@
           }
         },
         {
-          "name": "Get Filtro by ID",
+          "name": "Update Filtro",
           "request": {
-            "method": "GET",
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoriaId\": 1,\n  \"temaId\": 2,\n  \"indicadorId\": 1,\n  \"desegregacionId\": 1,\n  \"yearId\": 2,\n  \"fuenteId\": 1,\n  \"fichaMetodologicaId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/filtros/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filtros",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Filtro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test for successful deletion",
+                  "if (pm.response.code === 200) {",
+                  "    console.log('Filter deleted successfully');",
+                  "}",
+                  "",
+                  "// Test for foreign key constraint errors",
+                  "if (pm.response.code === 400) {",
+                  "    const response = pm.response.json();",
+                  "    console.log('Deletion prevented:', response.message);",
+                  "    pm.test('Contains helpful error message', function () {",
+                  "        pm.expect(response.message).to.include('Cannot delete filter');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/filtros/1",
@@ -1037,6 +1294,49 @@
               "path": [
                 "filtros",
                 "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Test Duplicate Filtro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test for duplicate filter error",
+                  "if (pm.response.code === 400) {",
+                  "    const response = pm.response.json();",
+                  "    console.log('Duplicate filter detected:', response.message);",
+                  "    pm.test('Contains helpful error message', function () {",
+                  "        pm.expect(response.message).to.include('already exists');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoriaId\": 1,\n  \"temaId\": 1,\n  \"indicadorId\": 1,\n  \"desegregacionId\": 1,\n  \"yearId\": 1,\n  \"fuenteId\": 1,\n  \"fichaMetodologicaId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/filtros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "filtros"
               ]
             }
           }

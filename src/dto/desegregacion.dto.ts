@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 export class CreateTipoDesegregacionDto {
   @IsString()
   @IsNotEmpty()
-  tipoDesegregacion: string;
+  tipoDesg: string;
 
   @IsOptional()
   @IsInt()
@@ -15,7 +15,7 @@ export class CreateTipoDesegregacionDto {
 export class UpdateTipoDesegregacionDto {
   @IsOptional()
   @IsString()
-  tipoDesegregacion?: string;
+  tipoDesg?: string;
 
   @IsOptional()
   @IsInt()
@@ -31,7 +31,7 @@ export class CreateDesegregacionDto {
 
   @IsString()
   @IsNotEmpty()
-  desegregacion: string;
+  desagregacion: string;
 
   @IsOptional()
   @IsInt()
@@ -47,7 +47,7 @@ export class UpdateDesegregacionDto {
 
   @IsOptional()
   @IsString()
-  desegregacion?: string;
+  desagregacion?: string;
 
   @IsOptional()
   @IsInt()

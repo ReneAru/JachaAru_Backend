@@ -18,7 +18,7 @@ export class TipoDesegregacionService {
     this.logger.debug('Fetching all disaggregation types');
     return await this.tipoDesegregacionRepository.find({
       relations: ['desegregaciones', 'indicadorTipos'],
-      order: { tipoDesegregacion: 'ASC' },
+      order: { tipoDesg: 'ASC' },
     });
   }
 
@@ -38,12 +38,12 @@ export class TipoDesegregacionService {
   }
 
   async create(createTipoDesegregacionDto: CreateTipoDesegregacionDto): Promise<TipoDesegregacion> {
-    this.logger.debug(`Creating new disaggregation type: ${createTipoDesegregacionDto.tipoDesegregacion}`);
+    this.logger.debug(`Creating new disaggregation type: ${createTipoDesegregacionDto.tipoDesg}`);
     
     const tipo = this.tipoDesegregacionRepository.create(createTipoDesegregacionDto);
     const savedTipo = await this.tipoDesegregacionRepository.save(tipo);
     
-    this.logger.log(`Disaggregation type created successfully: ${savedTipo.tipoDesegregacion} (ID: ${savedTipo.id})`);
+    this.logger.log(`Disaggregation type created successfully: ${savedTipo.tipoDesg} (ID: ${savedTipo.id})`);
     return this.findOne(savedTipo.id);
   }
 
@@ -55,7 +55,7 @@ export class TipoDesegregacionService {
     Object.assign(tipo, updateTipoDesegregacionDto);
     const updatedTipo = await this.tipoDesegregacionRepository.save(tipo);
     
-    this.logger.log(`Disaggregation type updated successfully: ${updatedTipo.tipoDesegregacion} (ID: ${updatedTipo.id})`);
+    this.logger.log(`Disaggregation type updated successfully: ${updatedTipo.tipoDesg} (ID: ${updatedTipo.id})`);
     return this.findOne(updatedTipo.id);
   }
 
@@ -92,7 +92,7 @@ export class DesegregacionService {
     this.logger.debug('Fetching all disaggregations');
     return await this.desegregacionRepository.find({
       relations: ['tipoDesegregacion', 'yearDesegregaciones', 'filtros'],
-      order: { desegregacion: 'ASC' },
+      order: { desagregacion: 'ASC' },
     });
   }
 
@@ -101,7 +101,7 @@ export class DesegregacionService {
     return await this.desegregacionRepository.find({
       where: { tipoDesegregacionId },
       relations: ['tipoDesegregacion'],
-      order: { desegregacion: 'ASC' },
+      order: { desagregacion: 'ASC' },
     });
   }
 
@@ -121,12 +121,12 @@ export class DesegregacionService {
   }
 
   async create(createDesegregacionDto: CreateDesegregacionDto): Promise<Desegregacion> {
-    this.logger.debug(`Creating new disaggregation: ${createDesegregacionDto.desegregacion}`);
+    this.logger.debug(`Creating new disaggregation: ${createDesegregacionDto.desagregacion}`);
     
     const desegregacion = this.desegregacionRepository.create(createDesegregacionDto);
     const savedDesegregacion = await this.desegregacionRepository.save(desegregacion);
     
-    this.logger.log(`Disaggregation created successfully: ${savedDesegregacion.desegregacion} (ID: ${savedDesegregacion.id})`);
+    this.logger.log(`Disaggregation created successfully: ${savedDesegregacion.desagregacion} (ID: ${savedDesegregacion.id})`);
     return this.findOne(savedDesegregacion.id);
   }
 
@@ -138,7 +138,7 @@ export class DesegregacionService {
     Object.assign(desegregacion, updateDesegregacionDto);
     const updatedDesegregacion = await this.desegregacionRepository.save(desegregacion);
     
-    this.logger.log(`Disaggregation updated successfully: ${updatedDesegregacion.desegregacion} (ID: ${updatedDesegregacion.id})`);
+    this.logger.log(`Disaggregation updated successfully: ${updatedDesegregacion.desagregacion} (ID: ${updatedDesegregacion.id})`);
     return this.findOne(updatedDesegregacion.id);
   }
 

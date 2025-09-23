@@ -10,6 +10,8 @@ import { TemasModule } from './modules/temas/temas.module';
 import { IndicadoresModule } from './modules/indicadores/indicadores.module';
 import { ConsultationsModule } from './modules/consultations/consultations.module';
 import { DataModule } from './modules/data/data.module';
+import { InvestigadoresModule } from './modules/investigadores/investigadores.module';
+import { FiltrosModule } from './modules/filtros/filtros.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { DataModule } from './modules/data/data.module';
     IndicadoresModule,
     ConsultationsModule,
     DataModule,
+    InvestigadoresModule,
+    FiltrosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

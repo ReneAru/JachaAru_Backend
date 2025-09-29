@@ -17,7 +17,7 @@ export class TipoDesegregacionService {
   async findAll(): Promise<TipoDesegregacion[]> {
     this.logger.debug('Fetching all disaggregation types');
     return await this.tipoDesegregacionRepository.find({
-      relations: ['desegregaciones', 'indicadorTipos'],
+      relations: ['desegregaciones', 'tipoDesegregacionIndicadores'],
       order: { tipoDesg: 'ASC' },
     });
   }
@@ -26,7 +26,7 @@ export class TipoDesegregacionService {
     this.logger.debug(`Fetching disaggregation type with ID: ${id}`);
     const tipo = await this.tipoDesegregacionRepository.findOne({
       where: { id },
-      relations: ['desegregaciones', 'indicadorTipos'],
+      relations: ['desegregaciones', 'tipoDesegregacionIndicadores'],
     });
 
     if (!tipo) {

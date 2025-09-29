@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { Fuente } from '../../entities/fuente.entity';
 import { Year } from '../../entities/year.entity';
@@ -14,13 +15,18 @@ import { TipoDesegregacionService, DesegregacionService } from './desegregacion.
 import { FuenteController } from './fuente.controller';
 import { YearController } from './year.controller';
 import { TipoDesegregacionController, DesegregacionController } from './desegregacion.controller';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Fuente, Year, TipoDesegregacion, Desegregacion]),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || 'default-secret',
-      signOptions: { expiresIn: '24h' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET', 'jacha-aru-secret'),
+        signOptions: { expiresIn: '24h' },
+      }),
+      inject: [ConfigService],
     }),
   ],
   controllers: [
@@ -34,6 +40,7 @@ import { TipoDesegregacionController, DesegregacionController } from './desegreg
     YearService,
     TipoDesegregacionService,
     DesegregacionService,
+    JwtAuthGuard,
   ],
   exports: [
     FuenteService,

@@ -18,7 +18,7 @@ This API provides a comprehensive system for:
 
 ## Technology Stack
 
-- **Framework**: [NestJS](https://nestjs.com/) 11.x - Progressive Node.js framework
+- **Framework**: [Vite](https://vite.com/) 11.x - Progressive Node.js framework
 - **Database**: PostgreSQL with [TypeORM](https://typeorm.io/) 0.3.26
 - **Authentication**: JWT (JSON Web Tokens) with Passport
 - **Validation**: class-validator and class-transformer
